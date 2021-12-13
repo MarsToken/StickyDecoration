@@ -209,7 +209,7 @@ public abstract class BaseDecoration extends RecyclerView.ItemDecoration {
             throw new NullPointerException("gridLayoutManager not allow null");
         }
         final int spanCount = gridLayoutManager.getSpanCount();
-        //相当于weight
+        //相当于weight：https://www.jianshu.com/p/b61c28ab2f24
         GridLayoutManager.SpanSizeLookup lookup = new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -217,7 +217,7 @@ public abstract class BaseDecoration extends RecyclerView.ItemDecoration {
                 int realPosition = getRealPosition(position);
                 if (realPosition < 0) {
                     //小于header数量
-                    span = spanCount;
+                    span = spanCount; // 3
                 } else {
                     String curGroupId = getGroupName(realPosition);
                     String nextGroupId;

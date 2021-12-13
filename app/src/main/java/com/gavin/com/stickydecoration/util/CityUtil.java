@@ -26,11 +26,11 @@ public class CityUtil {
         List<City> dataList = new ArrayList<>();
         final String FU_JIAN = CITYS[0];
         final int FU_JIAN_ICON = R.mipmap.city1;
-        dataList.add(new City("福州", FU_JIAN, FU_JIAN_ICON));
-        dataList.add(new City("厦门", FU_JIAN, FU_JIAN_ICON));
-        dataList.add(new City("泉州", FU_JIAN, FU_JIAN_ICON));
-        dataList.add(new City("宁德", FU_JIAN, FU_JIAN_ICON));
-        dataList.add(new City("漳州", FU_JIAN, FU_JIAN_ICON));
+        dataList.add(new City("济南", FU_JIAN, FU_JIAN_ICON));
+        dataList.add(new City("青岛", FU_JIAN, FU_JIAN_ICON));
+        dataList.add(new City("淄博", FU_JIAN, FU_JIAN_ICON));
+        dataList.add(new City("泰安", FU_JIAN, FU_JIAN_ICON));
+        dataList.add(new City("潍坊", FU_JIAN, FU_JIAN_ICON));
         final String AN_HUI = CITYS[1];
         final int AN_HUI_ICON = R.mipmap.city2;
         dataList.add(new City("合肥", AN_HUI, AN_HUI_ICON));

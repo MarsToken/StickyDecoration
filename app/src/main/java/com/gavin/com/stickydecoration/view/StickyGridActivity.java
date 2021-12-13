@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,9 @@ import com.gavin.com.stickydecoration.util.DensityUtil;
 import com.gavin.com.stickydecoration.view.widget.MyRecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -42,6 +45,9 @@ public class StickyGridActivity extends AppCompatActivity {
         initView();
     }
 
+    private Map<Integer, Integer> map = new HashMap<>();
+    private int index = 0;
+
     private void initView() {
         mRecyclerView = findViewById(R.id.rv);
         //模拟数据
@@ -49,6 +55,32 @@ public class StickyGridActivity extends AppCompatActivity {
         dataList.addAll(CityUtil.getCityList());
 
         //------------- StickyDecoration 使用部分  ----------------
+        for (int i = 1; i < dataList.size(); i++) {
+            if (!dataList.get(i).getProvince().equals(dataList.get(i - 1).getProvince())) {
+                int lastPos = i - 1;
+                int realPos = lastPos + index;
+                int weight = (3 - (realPos + 1) % 3) % 3;
+                map.put(lastPos, weight);
+                index += weight;
+            } else {
+                map.put(i - 1, 0);
+            }
+//            if (position > 0) { // pos=1
+//                if (!dataList.get(position).getProvince().equals(dataList.get(position - 1).getProvince())) {
+//                    map.put(position - 1, position % 3);
+//                } else {
+//                    map.put(position - 1, 0);
+//                }
+//            } else if (dataList.size() >= 2) {
+//                if (!dataList.get(0).getProvince().equals(dataList.get(1).getProvince())) {
+//                    map.put(0, 2);
+//                } else {
+//                    map.put(0, 0);
+//                }
+//            } else {
+//                map.put(position, 0);
+//            }
+        }
         StickyDecoration decoration = StickyDecoration.Builder
                 .init(new GroupListener() {
                     @Override
@@ -99,9 +131,16 @@ public class StickyGridActivity extends AppCompatActivity {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(StickyGridActivity.this, "item click " + position, Toast.LENGTH_LONG).show();
+                        Toast.makeText(StickyGridActivity.this, "item click " + dataList.get(position).getName(), Toast.LENGTH_LONG).show();
                     }
                 });
+                if (null != map.get(viewHolder.getAdapterPosition())) {
+                    int weight = map.get(viewHolder.getAdapterPosition());
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) holder.mViewSpace.getLayoutParams();
+                    layoutParams.weight = weight;
+                    System.out.println("position = " + position + ",weight=" + weight);
+                    holder.mViewSpace.setLayoutParams(layoutParams);
+                }
             }
 
             @Override
@@ -114,10 +153,12 @@ public class StickyGridActivity extends AppCompatActivity {
 
     static class Holder extends RecyclerView.ViewHolder {
         TextView mTextView;
+        View mViewSpace;
 
         public Holder(View itemView) {
             super(itemView);
             mTextView = itemView.findViewById(R.id.tv);
+            mViewSpace = itemView.findViewById(R.id.space);
         }
     }
 
